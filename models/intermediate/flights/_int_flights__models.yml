@@ -1,0 +1,61 @@
+models:
+  - name: fct_bookings
+    description: Факты бронирований
+    docs:
+      show: true
+      node_color: red
+    config:
+      contract: {enforced: true}
+    meta:
+      owner: "ZlayaMarmeladka"
+
+    columns:
+      - name: book_ref
+        data_type: bpchar(6)
+        constraints:
+          - type: not_null
+      - name: book_date
+        data_type: timestamptz
+        meta:
+          owner: mamka_admina
+        quote: true
+      - name: total_amount
+        data_type: numeric(10, 2)
+        constraints:
+          - type: check
+            expression: "total_amount > 0"
+        tests:
+          - not_null
+
+  - name: fct_ticket_flights
+    description: Факты выдачи посадочных талонов
+    docs:
+      show: true
+      node_color: green
+    config:
+      contract: {enforced: true}
+    meta:
+      owner: "ol_st90@mail.ru"
+
+    columns:
+      - name: ticket_no
+        data_type: bpchar(13)
+        constraints:
+          - type: not_null
+      - name: flight_id
+        data_type: int4
+      - name: fare_conditions
+        data_type: varchar(10)
+      - name: amount
+        data_type: numeric(10, 2)
+        constraints:
+        - type: check
+          expression: "amount > 0"
+      - name: boarding_pass_exists
+        data_type: text
+      - name: boarding_no
+        data_type: int4
+      - name: seat_no
+        data_type: varchar(4)
+      - name: load_date
+        data_type: date
