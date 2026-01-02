@@ -5,7 +5,6 @@ config(
     unique_key=['flight_id'],
 )
 }}
-
 select
     flight_id,
     flight_no,
