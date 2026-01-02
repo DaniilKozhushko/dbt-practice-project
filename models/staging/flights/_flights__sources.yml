@@ -1,0 +1,55 @@
+sources:
+  - name: demo_src
+    description: Данные из БД авиаперелётов
+    database: dwh_flights
+    schema: demo_src
+    tables:
+      - name: aircrafts
+        description: '{{ doc("aircrafts_description") }}'
+        columns:
+          - name: aircraft_code
+            description: Код модели самолёта
+            tests:
+              - not_null
+              - unique
+          - name: model
+            description: Название модели самолёта
+          - name: range
+            description: Хз, возможно это максимальная дальность полёта
+      - name: airports
+        description: Аэропорты
+        columns:
+          - name: airport_code
+            description: Код аэропорта
+          - name: airport_name
+            description: Название
+          - name: city
+            description: Город
+          - name: coordinates
+            description: Координаты
+          - name: timezone
+            description: Временная зона
+      - name: seats
+        description: Места в самолтёах
+        columns:
+          - name: aircraft_code
+            description: Код модели самолёта
+          - name: seat_no
+            description: Номер места
+          - name: fare_conditions
+            description: Класс места
+      - name: bookings
+        description: Бронирования
+        columns:
+          - name: book_ref
+          - name: book_date
+          - name: total_amount
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 1
+            period: day
+          filter: current_timestamp::date - book_date::date < 3
+        loaded_at_field: book_date::timestamp
